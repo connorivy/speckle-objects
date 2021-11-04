@@ -1,33 +1,23 @@
-﻿using Speckle.Newtonsoft.Json;
-using Speckle.Core.Kits;
+﻿using Speckle.Core.Kits;
 using Speckle.Core.Models;
 using System.Collections.Generic;
 using Objects.Structural.Geometry;
+using Objects.Structural.Loading;
 
-namespace Objects.Structural.Loading
+namespace Objects.Structural.GSA.Loading
 {
-    public class BeamLoad : Load
+    public class GSALoadBeam : LoadBeam
     {
-        [DetachProperty]
-        [Chunkable(5000)]
-        public List<Base> elements { get; set; } //element list, make this chunkable, make this detachable too?
-        public BeamLoadType loadType { get; set; }
-        public LoadDirection direction { get; set; }
+        public int nativeId { get; set; }
+        public GSALoadBeam() { }
 
-        [DetachProperty]
-        public Axis loadAxis { get; set; }
-        public LoadAxisType loadAxisType { get; set; }
-        public bool isProjected { get; set; }
-        public List<double> values { get; set; }
-        public List<double> positions { get; set; }
-        public BeamLoad() { }
-
-        [SchemaInfo("BeamLoad", "Creates a Speckle structural beam (1D elem/member) load", "Structural", "Loading")]
-        public BeamLoad(LoadCase loadCase, List<Base> elements, BeamLoadType loadType, LoadDirection direction, LoadAxisType loadAxisType = LoadAxisType.Global,
+        [SchemaInfo("GSALoadBeam", "Creates a Speckle structural beam (1D elem/member) load for GSA", "GSA", "Loading")]
+        public GSALoadBeam(int nativeId, LoadCase loadCase, List<Base> elements, BeamLoadType loadType, LoadDirection direction, LoadAxisType loadAxisType = LoadAxisType.Global,
             [SchemaParamInfo("A list that represents load magnitude (number of values varies based on load type - Point: 1, Uniform: 1, Linear: 2, Patch: 2, Tri-linear:2)")] List<double> values = null,
             [SchemaParamInfo("A list that represents load locations (number of values varies based on load type - Point: 1, Uniform: null, Linear: null, Patch: 2, Tri-linear: 2)")] List<double> positions = null,
             bool isProjected = false)
         {
+            this.nativeId = nativeId;
             this.loadCase = loadCase;
             this.elements = elements;
             this.loadType = loadType;
@@ -38,12 +28,13 @@ namespace Objects.Structural.Loading
             this.isProjected = isProjected;
         }
 
-        [SchemaInfo("BeamLoad (user-defined axis)", "Creates a Speckle structural beam (1D elem/member) load (specified for a user-defined axis)", "Structural", "Loading")]
-        public BeamLoad(LoadCase loadCase, List<Base> elements, BeamLoadType loadType, LoadDirection direction, Axis loadAxis,
+        [SchemaInfo("GSALoadBeam (user-defined axis)", "Creates a Speckle structural beam (1D elem/member) load (specified for a user-defined axis) for GSA", "GSA", "Loading")]
+        public GSALoadBeam(int nativeId, LoadCase loadCase, List<Base> elements, BeamLoadType loadType, LoadDirection direction, Axis loadAxis,
             [SchemaParamInfo("A list that represents load magnitude (number of values varies based on load type - Point: 1, Uniform: 1, Linear: 2, Patch: 2, Tri-linear:2)")] List<double> values = null,
             [SchemaParamInfo("A list that represents load locations (number of values varies based on load type - Point: 1, Uniform: null, Linear: null, Patch: 2, Tri-linear: 2)")] List<double> positions = null,
             bool isProjected = false)
         {
+            this.nativeId = nativeId;
             this.loadCase = loadCase;
             this.elements = elements;
             this.loadType = loadType;
@@ -51,6 +42,12 @@ namespace Objects.Structural.Loading
             this.values = values;
             this.positions = positions;
             this.isProjected = isProjected;
+            this.nativeId = nativeId;
         }
     }
+
+
+
+
+
 }

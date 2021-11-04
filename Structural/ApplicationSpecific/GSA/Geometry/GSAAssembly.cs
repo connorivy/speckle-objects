@@ -12,6 +12,9 @@ namespace Objects.Structural.GSA.Geometry
     {
         public int nativeId { get; set; } //equiv to num record of gwa keyword        
         public string name { get; set; }
+
+        [DetachProperty]
+        [Chunkable(5000)]
         public List<Base> entities { get; set; } //nodes, elements, members
 
         [DetachProperty]
@@ -25,13 +28,13 @@ namespace Objects.Structural.GSA.Geometry
         public double sizeY { get; set; }
         public double sizeZ { get; set; }
         public string curveType { get; set; } // enum? circular or lagrange sufficient?
-        public string curveOrder { get; set; }
-        public string pointDefinition { get; set; } // enum as well? points and spacing to start? 
-        public double points { get; set; } // or make this Base type to accomdate storey list and explicit range? or add sep property for those cases?
-
+        public int curveOrder { get; set; }
+        public string pointDefinition { get; set; } // enum as well? points and spacing to start? || points and storeys to be supported
+        public List<double> points { get; set; } // or make this Base type to accomdate storey list and explicit range? or add sep property for those cases?
         public GSAAssembly() { }
 
-        public GSAAssembly(int nativeId, string name, List<Base> entities, GSANode end1Node, GSANode end2Node, GSANode orientationNode, double sizeY, double sizeZ, string curveType, string curveOrder, string pointDefinition, double points)
+        [SchemaInfo("GSAAssembly", "Creates a Speckle structural assembly (ie. a way to define an entity that is formed from a collection of elements or members) for GSA", "GSA", "Bridge")]
+        public GSAAssembly(int nativeId, string name, List<Base> entities, GSANode end1Node, GSANode end2Node, GSANode orientationNode, double sizeY, double sizeZ, string curveType, int curveOrder, string pointDefinition, List<double> points)
         {
             this.nativeId = nativeId;
             this.name = name;
